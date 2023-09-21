@@ -1,44 +1,28 @@
-#importing required libraries for TechVidvan Password Generator project using Python
-from msilib.schema import CheckBox
 import random
-from tkinter import *
 import string
-import tkinter
 
-# Creating a window
-window = Tk()
-window.title('TechVidvan')  # Window title
-window.geometry('500x500')  # Window geometry
+def generate_password(length=12, include_digits=True, include_special_chars=True):
+    # Define character sets
+    lowercase_letters = string.ascii_lowercase
+    uppercase_letters = string.ascii_uppercase
+    digits = string.digits if include_digits else ""
+    special_chars = '!@#$%^&*()_+[]{}|;:,.<>?'
+    
+    # Create a pool of characters based on complexity requirements
+    characters = lowercase_letters + uppercase_letters
+    if include_digits:
+        characters += digits
+    if include_special_chars:
+        characters += special_chars
 
-Label(window, font=('bold', 10), text='PASSWORD GENERATOR').pack()  # Giving label to window
+    # Ensure password length is not less than 4
+    length = max(length, 4)
 
-# Function to generate password
-def password_generate(leng):
-    valid_char = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@_'  # Characters of the password
-    password = ''.join(random.sample(valid_char, leng))  # Random generation of password
-    l = Label(window, text=password, font=('bold', 20))  # Displaying password
-    l.place(x=190, y=50)
+    # Generate the password
+    password = ''.join(random.choice(characters) for _ in range(length))
+    
+    return password
 
-Checkbutton(text='4 character', onvalue=4, offvalue=0, variable=len1).place(x=200, y=150)  # Creating checkbox
-Checkbutton(text='6 character', onvalue=6, offvalue=0, variable=len2).place(x=200, y=170)  # Creating checkbox
-Checkbutton(text='8 character', onvalue=8, offvalue=0, variable=len3).place(x=200, y=190)  # Creating checkbox
-
-# Converting string input to integer
-len1 = tkinter.IntVar()
-len2 = tkinter.IntVar()
-len3 = tkinter.IntVar()
-
-# Function to check the checkbox
-def get_len():
-    if len1.get() == 4:
-        password_generate(4)
-    elif len2.get() == 6:
-        password_generate(6)
-    elif len3.get() == 8:
-        password_generate(8)
-    else:
-        password_generate(6)
-
-Button(window, text='Generate', font=('normal', 10), bg='yellow', command=get_len).place(x=200, y=100)
-
-window.mainloop()  # Run the window
+# Example usage:
+password = generate_password(length=12, include_digits=True, include_special_chars=True)
+print("Generated Password:", password)
